@@ -1,40 +1,17 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { useQueryClient, useInfiniteQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { useInfiniteQuery } from "react-query";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import { getFeed } from "./api";
+import { getFeed } from "../api/api";
+import Card from "./Card";
 
 const List = styled.div`
-  height: 50vh;
-  overflow-y: auto;
-  width: 200px;
-`;
-const Card = styled.div`
-  margin-bottom: 10px;
-  padding: 8px;
-  border-radius: 8px;
-  background-color: #ccc;
-  display: flex;
-  flex-direction: column;
+  height: 90vh;
+  width: 300px;
+  overflow-y: scroll;
+  padding: 20px;
 `;
 
-const Image = styled.img`
-  width: 100px;
-  margin-top: 10px;
-`;
-
-const Title = styled(Link)`
-  font-size: 18px;
-`;
-
-const CardComponent = ({ title, image, page, id }) => {
-  return (
-    <Card key={title}>
-      <Title to={`/${page}/${id}`}>{title}</Title> <Image src={image} />
-    </Card>
-  );
-};
 const Feed = () => {
   const {
     status,
@@ -50,8 +27,6 @@ const Feed = () => {
       const nextPage = pages.length + 1;
       return nextPage < totalPages ? nextPage : false;
     },
-    staleTime: 5000,
-    cacheTime: 10,
   });
 
   const loadMoreButtonRef = useRef();
@@ -69,7 +44,7 @@ const Feed = () => {
         {data?.pages?.map((page, i) => (
           <React.Fragment key={i}>
             {page.articles.map((article) => (
-              <CardComponent
+              <Card
                 key={article.id}
                 title={article.title}
                 image={article.urlToImage}
