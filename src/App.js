@@ -4,8 +4,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useParams,
 } from "react-router-dom";
 import Feed from "./components/Feed";
 import Article from "./components/Article";
@@ -18,7 +16,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <Feed />
           <Switch>
-            <Route path="/:id" children={<Article />} />
+            <Route path="/:page/:id" children={<Article />} />
           </Switch>
         </QueryClientProvider>
       </div>
